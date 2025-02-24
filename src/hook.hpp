@@ -129,7 +129,7 @@ public:
     std::unordered_set<Callback *> candidates_set;
     for (auto &cb : m_callbacks) {
       if ((cb.m_type == CallbackType::Single &&
-           cb.m_state == CallbackState::Wait) ||
+           cb.m_state != CallbackState::Called) ||
           cb.m_type == CallbackType::Always) {
         candidates.push_back(&cb);
         candidates_set.insert(&cb);
@@ -152,13 +152,8 @@ public:
           continue;
         }
         Callback *dep_cb = it->second;
-        if (candidates_set.count(dep_cb)) {
+        if (dep_cb->m_state != CallbackState::Called) {
           dep_count++;
-          dependents[dep_id].push_back(cb);
-        } else {
-          if (dep_cb->m_state != CallbackState::Called) {
-            dep_count++;
-          }
         }
       }
       dep_count_map[cb] = dep_count;
