@@ -14,7 +14,9 @@
 enum class CallbackState { Wait, Failed, Called };
 enum class CallbackType { Single, Always };
 
-template <typename Type, typename... Args> class hook_t {
+template <typename Type> class hook_t;
+
+template <typename Type, typename... Args> class hook_t<Type (*)(Args...)> {
 public:
   using Fn = Type (*)(Args...);
   using CallbackFn = std::any (*)(Args...);

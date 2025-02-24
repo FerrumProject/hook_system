@@ -3,8 +3,9 @@
 
 #include "hook.hpp"
 
-int foo(int a, int b) { return a + b; }
-hook_t<int, int, int> bar([](int a, int b) {
+int __stdcall foo(int a, int b) { return a + b; }
+
+hook_t<int(__stdcall *)(int, int)> bar([](int a, int b) {
   bar.execute_callbacks(a, b);
 
   return bar.original(a, b) * 2;
